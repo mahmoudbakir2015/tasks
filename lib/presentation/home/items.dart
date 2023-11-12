@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import '../../constants/styles.dart';
+import '../filters/filters.dart';
+import '../sort/sort.dart';
 
 class Header extends StatelessWidget {
   const Header({super.key});
@@ -13,13 +15,37 @@ class Header extends StatelessWidget {
         children: [
           customButton(
             text: 'Filters',
-            icon: Icons.filter_1_outlined,
-            onPressed: () {},
+            icon: Icons.filter_list,
+            onPressed: () {
+              showBottomSheet(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(Styles.appPadding),
+                      topRight: Radius.circular(Styles.appPadding),
+                    ),
+                  ),
+                  context: context,
+                  builder: (context) {
+                    return Filters();
+                  });
+            },
           ),
           customButton(
-            text: 'Filters',
-            icon: Icons.filter_1_outlined,
-            onPressed: () {},
+            text: 'Sort',
+            icon: Icons.sort_by_alpha,
+            onPressed: () {
+              showBottomSheet(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(Styles.appPadding),
+                      topRight: Radius.circular(Styles.appPadding),
+                    ),
+                  ),
+                  context: context,
+                  builder: (context) {
+                    return const Sort();
+                  });
+            },
           ),
         ],
       ),
@@ -103,7 +129,7 @@ Row buildSubDetails(
             height: 20,
             child: Center(
               child: Text(
-                '$rating ',
+                '${rating.toDouble()}',
                 style: const TextStyle(
                   color: Colors.white,
                 ),
