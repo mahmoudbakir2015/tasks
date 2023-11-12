@@ -3,49 +3,8 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 import '../../constants/styles.dart';
 
-Column chooseRate({required List rating}) {
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      buildBoldText(text: 'RATING'),
-      SizedBox(
-        width: double.infinity,
-        height: 40,
-        child: ListView.separated(
-          shrinkWrap: true,
-          scrollDirection: Axis.horizontal,
-          itemBuilder: (context, index) {
-            return chooseRateItem(
-                color: rating[index]['color'], rate: rating[index]['rating']);
-          },
-          separatorBuilder: (context, index) {
-            return const SizedBox(
-              width: 40,
-            );
-          },
-          itemCount: rating.length,
-        ),
-      ),
-    ],
-  );
-}
-
-Container chooseRateItem({required Color color, required String rate}) {
-  return Container(
-    color: color,
-    width: 50,
-    child: Center(
-        child: Text(
-      '$rate+',
-      style: const TextStyle(
-        color: Colors.white,
-        fontWeight: FontWeight.bold,
-      ),
-    )),
-  );
-}
-
-SizedBox choosePrice() {
+SizedBox choosePrice(
+    {required void Function(double)? onChanged, double value = 20}) {
   return SizedBox(
     width: double.infinity,
     height: 180,
@@ -64,12 +23,12 @@ SizedBox choosePrice() {
                     color: Colors.grey,
                   ),
                 ),
-                width: 60,
-                height: 40,
-                child: const Center(
+                width: 70,
+                height: 50,
+                child: Center(
                   child: Text(
-                    r'540+ $',
-                    style: TextStyle(
+                    '$value+ \$',
+                    style: const TextStyle(
                       color: Colors.black87,
                     ),
                   ),
@@ -78,12 +37,31 @@ SizedBox choosePrice() {
             ],
           ),
         ),
-        Expanded(
-          child: Container(
-            color: Colors.amber,
-          ),
+        Slider(
+          min: 20,
+          value: value,
+          max: 540,
+          divisions: 5,
+          label: value.round().toString(),
+          onChanged: onChanged,
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            buildCustomTextPrice(text: '20'),
+            buildCustomTextPrice(text: '540'),
+          ],
         ),
       ],
+    ),
+  );
+}
+
+Text buildCustomTextPrice({required String text}) {
+  return Text(
+    '\$ $text',
+    style: const TextStyle(
+      color: Colors.grey,
     ),
   );
 }
@@ -100,59 +78,31 @@ Padding buildBoldText({required String text}) {
   );
 }
 
-Column chooseStarsRate({required List numStars}) {
+Column chooseNumRate({
+  required List rating,
+}) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
       buildBoldText(text: 'HOTEL CLASS'),
-      buildStarsItem(numStars: numStars),
+      RateNumItem(
+        rating: rating,
+      ),
     ],
   );
 }
 
-buildStarsItem({required List numStars}) {
-  return SizedBox(
-    height: 50,
-    width: double.infinity,
-    child: ListView.separated(
-      shrinkWrap: true,
-      scrollDirection: Axis.horizontal,
-      itemBuilder: (context, index) {
-        return Container(
-          width: 50,
-          decoration: BoxDecoration(
-            border: Border.all(color: Colors.amber),
-            borderRadius: BorderRadius.circular(
-              Styles.appPadding,
-            ),
-          ),
-          child: Center(
-            child: RatingBar.builder(
-              initialRating: numStars[index].toDouble(),
-              minRating: 1,
-              itemSize: 16,
-              direction: Axis.horizontal,
-              allowHalfRating: true,
-              itemCount: numStars[index].toInt(),
-              itemPadding: const EdgeInsets.symmetric(horizontal: 2.0),
-              itemBuilder: (context, _) => const Icon(
-                Icons.star,
-                color: Colors.amber,
-              ),
-              onRatingUpdate: (rating) {
-                print(rating);
-              },
-            ),
-          ),
-        );
-      },
-      separatorBuilder: (context, index) {
-        return const SizedBox(
-          width: 40,
-        );
-      },
-      itemCount: numStars.length,
-    ),
+Column chooseStarsRate({
+  required List numStars,
+}) {
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      buildBoldText(text: 'HOTEL CLASS'),
+      StarsItem(
+        numStars: numStars,
+      ),
+    ],
   );
 }
 
@@ -173,4 +123,115 @@ SizedBox buildFooter() {
       ),
     ),
   );
+}
+
+class StarsItem extends StatefulWidget {
+  final List numStars;
+  const StarsItem({super.key, required this.numStars});
+
+  @override
+  State<StarsItem> createState() => _StarsItemState();
+}
+
+class _StarsItemState extends State<StarsItem> {
+  int active = 0;
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 50,
+      width: double.infinity,
+      child: ListView.separated(
+        shrinkWrap: true,
+        scrollDirection: Axis.horizontal,
+        itemBuilder: (context, index) {
+          return GestureDetector(
+            onTap: () {
+              setState(() {});
+              active = index;
+            },
+            child: Container(
+              width: 60,
+              decoration: BoxDecoration(
+                border: Border.all(
+                    color: active == index ? Colors.black : Colors.amber),
+                borderRadius: BorderRadius.circular(
+                  Styles.appPadding,
+                ),
+              ),
+              child: Center(
+                child: RatingBarIndicator(
+                  rating: widget.numStars[index].toDouble(),
+                  itemBuilder: (context, index) => const Icon(
+                    Icons.star,
+                    color: Colors.amber,
+                  ),
+                  itemCount: widget.numStars[index].toInt(),
+                  itemSize: 12,
+                  direction: Axis.horizontal,
+                ),
+              ),
+            ),
+          );
+        },
+        separatorBuilder: (context, index) {
+          return const SizedBox(
+            width: 30,
+          );
+        },
+        itemCount: widget.numStars.length,
+      ),
+    );
+  }
+}
+
+class RateNumItem extends StatefulWidget {
+  final List rating;
+  const RateNumItem({super.key, required this.rating});
+
+  @override
+  State<RateNumItem> createState() => _RateNumItemState();
+}
+
+class _RateNumItemState extends State<RateNumItem> {
+  int active = 0;
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 50,
+      width: double.infinity,
+      child: ListView.separated(
+        shrinkWrap: true,
+        scrollDirection: Axis.horizontal,
+        itemBuilder: (context, index) {
+          return GestureDetector(
+            onTap: () {
+              setState(() {});
+              active = index;
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                color: widget.rating[index]['color'],
+                border: active == index ? Border.all() : null,
+              ),
+              width: 50,
+              child: Center(
+                  child: Text(
+                '${widget.rating[index]['rating']}+',
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
+              )),
+            ),
+          );
+        },
+        separatorBuilder: (context, index) {
+          return const SizedBox(
+            width: 30,
+          );
+        },
+        itemCount: widget.rating.length,
+      ),
+    );
+  }
 }

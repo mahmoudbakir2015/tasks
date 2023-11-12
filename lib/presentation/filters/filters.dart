@@ -15,6 +15,7 @@ class Filters extends StatefulWidget {
 }
 
 class _FiltersState extends State<Filters> {
+  double startPrice = 20;
   List<Map<String, dynamic>> rating = [
     {
       'rating': '0',
@@ -64,12 +65,23 @@ class _FiltersState extends State<Filters> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           buildHeader(context, text: 'Filters'),
-          choosePrice(),
-          chooseRate(rating: rating),
+          choosePrice(
+            onChanged: (double value) {
+              setState(() {
+                startPrice = value;
+              });
+            },
+            value: startPrice,
+          ),
+          chooseNumRate(
+            rating: rating,
+          ),
           const SizedBox(
             height: 20,
           ),
-          chooseStarsRate(numStars: numStars),
+          chooseStarsRate(
+            numStars: numStars,
+          ),
           const SizedBox(
             height: 20,
           ),
