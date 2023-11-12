@@ -26,7 +26,7 @@ class Header extends StatelessWidget {
                   ),
                   context: context,
                   builder: (context) {
-                    return Filters();
+                    return const Filters();
                   });
             },
           ),

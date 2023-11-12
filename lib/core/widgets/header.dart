@@ -6,17 +6,18 @@ Card buildHeader(BuildContext context,
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        if (isFilter == true)
-          TextButton(
-            onPressed: () {},
-            child: const Text(
-              'Reset',
-              style: TextStyle(
-                decoration: TextDecoration.underline,
-                color: Colors.grey,
-              ),
-            ),
-          ),
+        isFilter
+            ? TextButton(
+                onPressed: () {},
+                child: const Text(
+                  'Reset',
+                  style: TextStyle(
+                    decoration: TextDecoration.underline,
+                    color: Colors.grey,
+                  ),
+                ),
+              )
+            : const Text(''),
         Text(
           text,
           style: const TextStyle(

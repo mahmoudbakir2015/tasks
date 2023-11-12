@@ -1,3 +1,3 @@
 abstract class Styles {
-  static double appPadding = 10.0;
+  static double appPadding = 15.0;
 }
