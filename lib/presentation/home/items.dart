@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-
-import '../../constants/constants.dart';
 import '../../constants/styles.dart';
 
 class Header extends StatelessWidget {
