@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tasks/controller/cubit/app_states.dart';
-import 'package:tasks/data/model/test_model.dart';
 import 'package:tasks/presentation/home/items.dart';
 import '../../constants/styles.dart';
 import '../../controller/cubit/app_cubit.dart';
@@ -14,10 +13,10 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  List<TestModel>? hotels;
   @override
   void initState() {
-    hotels = BlocProvider.of<AppCubit>(context).getAllHotels();
+    BlocProvider.of<AppCubit>(context).hotels =
+        BlocProvider.of<AppCubit>(context).getAllHotels();
     super.initState();
   }
 
@@ -34,26 +33,27 @@ class _HomeState extends State<Home> {
                 const Header(),
                 BlocBuilder<AppCubit, AppStates>(
                   builder: (context, state) {
+                    AppCubit appCubit = AppCubit.get(context);
                     if (state is SuccessDataState) {
-                      hotels = (state).testModel;
+                      appCubit.hotels = (state).testModel;
                       return ListView.separated(
                         physics: const NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
                         itemBuilder: (context, index) {
                           return CustomCardItem(
-                            name: hotels![index].name!,
-                            stars: hotels![index].starts!,
-                            price: hotels![index].price!,
-                            image: hotels![index].image!,
-                            reviewScore: hotels![index].reviewScore!,
-                            review: hotels![index].review!,
-                            address: hotels![index].address!,
+                            name: appCubit.hotels![index].name!,
+                            stars: appCubit.hotels![index].starts!,
+                            price: appCubit.hotels![index].price!,
+                            image: appCubit.hotels![index].image!,
+                            reviewScore: appCubit.hotels![index].reviewScore!,
+                            review: appCubit.hotels![index].review!,
+                            address: appCubit.hotels![index].address!,
                           );
                         },
                         separatorBuilder: (context, index) => const SizedBox(
                           height: 10,
                         ),
-                        itemCount: hotels!.length,
+                        itemCount: appCubit.hotels!.length,
                       );
                     }
                     if (state is FailedDataState) {
@@ -62,7 +62,7 @@ class _HomeState extends State<Home> {
                       );
                     } else {
                       return const Center(
-                        child: Text("Oops Some thing wrong....!"),
+                        child: Text("Oops Some thing wrong or Network....!"),
                       );
                     }
                   },
