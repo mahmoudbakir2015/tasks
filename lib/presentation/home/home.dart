@@ -57,12 +57,22 @@ class _HomeState extends State<Home> {
                       );
                     }
                     if (state is FailedDataState) {
-                      return const Center(
-                        child: CircularProgressIndicator(),
+                      return const Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          CircularProgressIndicator(),
+                          Text("Oops Some thing wrong or Network....!"),
+                        ],
                       );
                     } else {
-                      return const Center(
-                        child: Text("Oops Some thing wrong or Network....!"),
+                      return const Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          CircularProgressIndicator(),
+                          Text("Please wait...🥰"),
+                        ],
                       );
                     }
                   },
