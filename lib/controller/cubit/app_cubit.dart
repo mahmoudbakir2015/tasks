@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tasks/controller/cubit/app_states.dart';
 import '../../data/model/test_model.dart';
@@ -23,5 +24,62 @@ class AppCubit extends Cubit<AppStates> {
       ));
     });
     return hotels;
+  }
+
+  changeSort({required int choose, required BuildContext context}) {
+    switch (choose) {
+      case 0:
+        BlocProvider.of<AppCubit>(context).hotels!.shuffle();
+        emit(SuccessDataState(
+          testModel: BlocProvider.of<AppCubit>(context).hotels!,
+        ));
+        break;
+      case 1:
+        BlocProvider.of<AppCubit>(context).hotels!.shuffle();
+        emit(SuccessDataState(
+          testModel: BlocProvider.of<AppCubit>(context).hotels!,
+        ));
+
+        break;
+      case 2:
+        BlocProvider.of<AppCubit>(context).hotels!.shuffle();
+        emit(SuccessDataState(
+          testModel: BlocProvider.of<AppCubit>(context).hotels!,
+        ));
+
+        break;
+      case 3:
+        BlocProvider.of<AppCubit>(context).hotels!.shuffle();
+        emit(SuccessDataState(
+          testModel: BlocProvider.of<AppCubit>(context).hotels!,
+        ));
+
+        break;
+      case 4:
+        BlocProvider.of<AppCubit>(context)
+            .hotels
+            ?.sort((a, b) => a.reviewScore.compareTo(b.reviewScore));
+        emit(SuccessDataState(
+          testModel: BlocProvider.of<AppCubit>(context).hotels!,
+        ));
+
+        break;
+      case 5:
+        BlocProvider.of<AppCubit>(context)
+            .hotels
+            ?.sort((a, b) => a.price.compareTo(b.price));
+        emit(SuccessDataState(
+          testModel: BlocProvider.of<AppCubit>(context).hotels!,
+        ));
+
+        break;
+      case 6:
+        BlocProvider.of<AppCubit>(context).hotels!.shuffle();
+        emit(SuccessDataState(
+          testModel: BlocProvider.of<AppCubit>(context).hotels!,
+        ));
+
+        break;
+    }
   }
 }

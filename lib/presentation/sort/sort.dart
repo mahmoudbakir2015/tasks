@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tasks/constants/styles.dart';
+import 'package:tasks/controller/cubit/app_cubit.dart';
 import 'package:tasks/presentation/sort/items.dart';
 
 import '../../core/widgets/header.dart';
@@ -46,8 +48,11 @@ class _SortState extends State<Sort> {
               return buildSortItmes(
                 text: sortItem[index],
                 onTap: () {
+                  BlocProvider.of<AppCubit>(context)
+                      .changeSort(choose: index, context: context);
                   print('tapped $selected');
                   selected = index;
+
                   setState(() {});
                 },
                 isActive: selected == index,

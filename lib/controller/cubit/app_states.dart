@@ -15,3 +15,5 @@ class FailedDataState extends AppStates {
 
   FailedDataState({required this.errMessage});
 }
+
+class ChangeState extends AppStates {}
